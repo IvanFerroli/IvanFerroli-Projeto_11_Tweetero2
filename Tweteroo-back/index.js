@@ -26,7 +26,7 @@ app.post("/tweets", (req, res) => {
 app.get("/tweets", (req, res) => {
     let lastTweets = []; 
     if(tweets.length > 10){
-        for(let i = 1; i >= 10; i++){
+        for(let i = tweets.length -1; i > tweets.length -10; i--){
             const tweetOwner = users.find((user) => user.username == tweets[tweets.length-i].username);
             lastTweets.push(
                 {
@@ -34,6 +34,7 @@ app.get("/tweets", (req, res) => {
                     avatar: tweetOwner.avatar
                 }
             );
+            lastTweets.shift();
         }
     }else{
        tweets.map((tweet) => {
@@ -47,9 +48,9 @@ app.get("/tweets", (req, res) => {
         })
 
     }
-    res.send(lastTweets);
+    let reversedLastTweets = [...lastTweets].reverse();
+    res.send(reversedLastTweets);
 })
-
 
 app.listen(5000, () => {console.log('Servidor iniciado em http://localhost:5000')});
 
